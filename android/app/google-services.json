@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "352079620309",
+    "project_id": "flutter-ade80",
+    "storage_bucket": "flutter-ade80.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352079620309:android:f4fc647bcd36ae44801a5c",
+        "android_client_info": {
+          "package_name": "com.cloud.riderapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352079620309-6ubh8ndke346361j2tbqak2e19chll95.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL7H_5pSjHyYATlvfkOc_ONHUM1fC-BQ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352079620309-6ubh8ndke346361j2tbqak2e19chll95.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
