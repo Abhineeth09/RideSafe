@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:rider_app/AllWidgets/Divider.dart';
 import 'package:rider_app/Assistants/assistantMethods.dart';
+import 'package:rider_app/DataHandler/appData.dart';
 //import 'package:flutter/firebase'
 class MainScreen extends StatefulWidget {
   static const String idScreen = 'main';
@@ -35,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
 
     newGoogleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-    String address = await AssistantMethods.searchCoordinateAddress(position);
+    String address = await AssistantMethods.searchCoordinateAddress(position, context);
     print("This is your address ::"+ address);
 
   }
@@ -212,7 +214,14 @@ class _MainScreenState extends State<MainScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Add Home",style: TextStyle(fontSize: 16.0,fontFamily: "Brand-Bold")),
+                              Text(
+                                Provider.of<AppData>(context).pickUpLocation != null
+                                    ? Provider.of<AppData>(context).pickUpLocation.placeName
+                                    : "Add Home",
+                              ),
+
+
+
                               SizedBox(height:4.0,),
                               Text("Your Home Address", style: TextStyle(color: Colors.black54,fontSize: 25.0,fontFamily: "Brand-Bold"),),
 
