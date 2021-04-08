@@ -1,6 +1,8 @@
 import 'dart:async';
+//import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -25,9 +27,16 @@ class _MainScreenState extends State<MainScreen> {
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
+
+  List<LatLng> pLineCoordinates = [];
+  Set<Polyline> polylineSet = {};
+
   Position currentPosition;
   var geoLocator = Geolocator();
   double bottomPaddingOfMap = 0;
+
+  Set<Marker> markersSet = {};
+  Set<Circle> circlesSet = {};
 
   void locatePosition() async{
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -113,6 +122,9 @@ class _MainScreenState extends State<MainScreen> {
             myLocationEnabled: true,
             zoomGesturesEnabled: true,
             zoomControlsEnabled: true,
+            polylines: polylineSet,
+            markers: markersSet,
+            circles: circlesSet,
             onMapCreated: (GoogleMapController controller) {
                 _controllerGoogleMap.complete(controller);
                 newGoogleMapController = controller;
@@ -294,6 +306,94 @@ class _MainScreenState extends State<MainScreen> {
 
     print("This is Encoded Points ::");
     print(details.encodedPoints);
+
+    PolylinePoints polylinePoints = PolylinePoints();
+    List<PointLatLng> decodePolylinePointsResult = polylinePoints.decodePolyline(details.encodedPoints);
+
+
+    pLineCoordinates.clear();
+
+    if(decodePolylinePointsResult.isNotEmpty){
+      decodePolylinePointsResult.forEach((PointLatLng pointLatLng) {
+        pLineCoordinates.add(LatLng(pointLatLng.latitude,pointLatLng.longitude));
+      });
+
+    }
+
+    polylineSet.clear();
+
+    setState(() {
+      Polyline polyline = Polyline(
+        color: Colors.pink,
+        polylineId: PolylineId("PolylineID"),
+        jointType: JointType.round,
+        points: pLineCoordinates,
+        width: 5,
+        startCap: Cap.roundCap,
+        endCap: Cap.roundCap,
+        geodesic: true,
+
+      );
+
+      polylineSet.add(polyline);
+    });
+
+    LatLngBounds latLngBounds;
+    if (pickUpLatLng.latitude > dropOffLatLng.latitude && pickUpLatLng.longitude > dropOffLatLng.longitude){
+      latLngBounds = LatLngBounds(southwest: dropOffLatLng, northeast: pickUpLatLng);
+    }
+    else if (pickUpLatLng.longitude > dropOffLatLng.longitude){
+      latLngBounds = LatLngBounds(southwest: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude), northeast: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude));
+    }
+    else if (pickUpLatLng.latitude > dropOffLatLng.latitude){
+      latLngBounds = LatLngBounds(southwest: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude), northeast: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude));
+    }
+    else{
+      latLngBounds =  LatLngBounds(southwest: pickUpLatLng, northeast: dropOffLatLng);
+    }
+
+    newGoogleMapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+
+    Marker pickUpLocMarker = Marker(
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+      infoWindow: InfoWindow(title: initialPos.placeName, snippet: "My Location"),
+      position: pickUpLatLng,
+      markerId: MarkerId("pickUpId"),
+    );
+
+    Marker dropOffLocMarker = Marker(
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      infoWindow: InfoWindow(title: finalPos.placeName, snippet: "Destination"),
+      position: dropOffLatLng,
+      markerId: MarkerId("dropOffId"),
+    );
+
+    setState(() {
+      markersSet.add(pickUpLocMarker);
+      markersSet.add(dropOffLocMarker);
+    });
+
+    Circle pickUpLocCircle = Circle(
+      fillColor: Colors.blueAccent,
+      center: pickUpLatLng,
+      radius: 12,
+      strokeWidth: 4,
+      strokeColor: Colors.blueAccent,
+      circleId: CircleId("pickUpId"),
+    );
+        Circle dropOffLocCircle = Circle(
+      fillColor: Colors.deepPurple,
+      center: dropOffLatLng,
+      radius: 12,
+      strokeWidth: 4,
+      strokeColor: Colors.deepPurple,
+      circleId: CircleId("dropOffId"),
+    );
+
+        setState(() {
+          circlesSet.add(pickUpLocCircle);
+          circlesSet.add(dropOffLocCircle);
+        });
   }
 
 }
