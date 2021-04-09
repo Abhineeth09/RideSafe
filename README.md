@@ -1,6 +1,6 @@
-# rider_app
+# RideSafe
 
-A new Flutter application.
+
 
 ## App Overview
 
