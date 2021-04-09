@@ -37,6 +37,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
+  var showLocationMenu = true;
 
   void locatePosition() async{
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -57,7 +58,6 @@ class _MainScreenState extends State<MainScreen> {
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,126 +166,134 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
           ),
-          
-          Positioned(
-            left: 0.0,
-            right: 0.0,
-            bottom: 0.0,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom:30.0),
-              child: Container(
-                height: 350.0,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(18.0)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black,
-                      blurRadius: 16.0,
-                      spreadRadius: 0.5,
-                      offset: Offset(0.7,0.7),
-                    )
-                  ]
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start ,
-                    children: [
-                      SizedBox(height: 20.0,),
-                      Text("Hi there!", style: TextStyle(fontSize: 25.0,fontFamily: "Brand-Bold"),),
-                      Text("Where to?", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),),
-                      SizedBox(height: 20.0),
-                      GestureDetector(
-                        onTap: () async{
-                          var res = await Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
 
-                          if (res == "obtainDirection"){
-                            await getPlaceDirection();
-                          }
-                        },
+          Visibility(
+            visible: showLocationMenu,
+            child: Positioned(
+              left: 0.0,
+              right: 0.0,
+              bottom: 0.0,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom:30.0),
+                child: Container(
+                  height: 350.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(18.0)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black,
+                        blurRadius: 16.0,
+                        spreadRadius: 0.5,
+                        offset: Offset(0.7,0.7),
+                      )
+                    ]
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start ,
+                      children: [
+                        SizedBox(height: 20.0,),
+                        Text("Hi there!", style: TextStyle(fontSize: 25.0,fontFamily: "Brand-Bold"),),
+                        Text("Where to?", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),),
+                        SizedBox(height: 20.0),
+                        GestureDetector(
+                          onTap: () async{
+                            var res = await Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
 
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black54,
-                                  blurRadius: 6.0,
-                                  spreadRadius: 0.5,
-                                  offset: Offset(0.7,0.7),
-                                )
-                              ]
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(
-                              children: [
-                                Icon(Icons.search,color: Colors.blueAccent,),
-                                SizedBox(width: 10.0,),
-                                Text("Search Drop Off",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold"))
-                              ],
+                            if (res == "obtainDirection"){
+                              for(int i=0;i>=0;i++) {
+                                locatePosition();
+                                await getPlaceDirection();
+                                await Future.delayed(Duration(seconds: 5));
+                              }
+                            }
+                          },
+
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black54,
+                                    blurRadius: 6.0,
+                                    spreadRadius: 0.5,
+                                    offset: Offset(0.7,0.7),
+                                  )
+                                ]
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.search,color: Colors.blueAccent,),
+                                  SizedBox(width: 10.0,),
+                                  Text("Search Drop Off",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold"))
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 24.0,),
-                      Row(
-                        children: [
-                          Icon(Icons.home, color: Colors.grey ),
-                          SizedBox(width: 12.0,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                Provider.of<AppData>(context).pickUpLocation != null
-                                    ? Provider.of<AppData>(context).pickUpLocation.placeName
-                                    : "Add Home",style: TextStyle(fontSize: 21.0,fontFamily: "Brand-Bold")
-                              ),
+                        SizedBox(height: 24.0,),
+                        Row(
+                          children: [
+                            Icon(Icons.home, color: Colors.grey ),
+                            SizedBox(width: 12.0,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  Provider.of<AppData>(context).pickUpLocation != null
+                                      ? Provider.of<AppData>(context).pickUpLocation.placeName
+                                      : "Add Home",style: TextStyle(fontSize: 21.0,fontFamily: "Brand-Bold",)
+                                ),
 
 
 
-                              SizedBox(height:4.0,),
-                              Text("Your Home Address", style: TextStyle(color: Colors.black54,fontSize: 18.0,fontFamily: "Brand-Bold"),),
+                                SizedBox(height:4.0,),
+                                Text("Your Home Address", style: TextStyle(color: Colors.black54,fontSize: 18.0,fontFamily: "Brand-Bold"),),
 
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 10.0,),
+                              ],
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 10.0,),
 
-                      DividerWidget(),
+                        DividerWidget(),
 
-                      SizedBox(height: 16.0,),
+                        SizedBox(height: 16.0,),
 
-                      Row(
-                        children: [
-                          Icon(Icons.work, color: Colors.grey ),
-                          SizedBox(width: 12.0,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Add Work",style: TextStyle(fontSize: 21.0,fontFamily: "Brand-Bold")),
-                              SizedBox(height:4.0,),
-                              Text("Your Office Address", style: TextStyle(color: Colors.black54,fontSize: 18.0,fontFamily: "Brand-Bold"),),
+                        Row(
+                          children: [
+                            Icon(Icons.work, color: Colors.grey ),
+                            SizedBox(width: 12.0,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Add Work",style: TextStyle(fontSize: 21.0,fontFamily: "Brand-Bold")),
+                                SizedBox(height:4.0,),
+                                Text("Your Office Address", style: TextStyle(color: Colors.black54,fontSize: 18.0,fontFamily: "Brand-Bold"),),
 
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
 
-            ),
+              ),
+              ),
             ),
           )
         ],
       ),
     );
   }
-
+var times = true;
+  var pickUp,dropOff;
   Future<void> getPlaceDirection() async {
     var initialPos = Provider.of<AppData>(context, listen: false,).pickUpLocation;
     var finalPos = Provider.of<AppData>(context, listen: false,).dropOffLocation;
@@ -293,16 +301,16 @@ class _MainScreenState extends State<MainScreen> {
     var pickUpLatLng = LatLng(initialPos.latitude, initialPos.longitude);
     var dropOffLatLng = LatLng(finalPos.latitude, finalPos.longitude);
 
-    showDialog(
+    /*showDialog(
       context: context,
       builder: (BuildContext context) => ProgressDialog(message: "Please wait...",),
 
 
-    );
+    );*/
 
     var details = await AssistantMethods.obtainDirectionDetails(pickUpLatLng, dropOffLatLng);
 
-    Navigator.pop(context);
+    //Navigator.pop(context);
 
     print("This is Encoded Points ::");
     print(details.encodedPoints);
@@ -337,40 +345,54 @@ class _MainScreenState extends State<MainScreen> {
 
       polylineSet.add(polyline);
     });
+    if (times) {
+      //Navigator.pop(context);
+      showLocationMenu = false;
+      times = false;
+      LatLngBounds latLngBounds;
+      if (pickUpLatLng.latitude > dropOffLatLng.latitude &&
+          pickUpLatLng.longitude > dropOffLatLng.longitude) {
+        latLngBounds =
+            LatLngBounds(southwest: dropOffLatLng, northeast: pickUpLatLng);
+      }
+      else if (pickUpLatLng.longitude > dropOffLatLng.longitude) {
+        latLngBounds = LatLngBounds(
+            southwest: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude),
+            northeast: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude));
+      }
+      else if (pickUpLatLng.latitude > dropOffLatLng.latitude) {
+        latLngBounds = LatLngBounds(
+            southwest: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude),
+            northeast: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude));
+      }
+      else {
+        latLngBounds =
+            LatLngBounds(southwest: pickUpLatLng, northeast: dropOffLatLng);
+      }
+      newGoogleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(latLngBounds, 70));
 
-    LatLngBounds latLngBounds;
-    if (pickUpLatLng.latitude > dropOffLatLng.latitude && pickUpLatLng.longitude > dropOffLatLng.longitude){
-      latLngBounds = LatLngBounds(southwest: dropOffLatLng, northeast: pickUpLatLng);
+      Marker pickUpLocMarker = Marker(
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+        infoWindow: InfoWindow(
+            title: initialPos.placeName, snippet: "My Location"),
+        position: pickUpLatLng,
+        markerId: MarkerId("pickUpId"),
+      );
+      pickUp = pickUpLocMarker;
+      Marker dropOffLocMarker = Marker(
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        infoWindow: InfoWindow(
+            title: finalPos.placeName, snippet: "Destination"),
+        position: dropOffLatLng,
+        markerId: MarkerId("dropOffId"),
+      );
+      dropOff = dropOffLocMarker;
+      //var showLocationMenu = false;
     }
-    else if (pickUpLatLng.longitude > dropOffLatLng.longitude){
-      latLngBounds = LatLngBounds(southwest: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude), northeast: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude));
-    }
-    else if (pickUpLatLng.latitude > dropOffLatLng.latitude){
-      latLngBounds = LatLngBounds(southwest: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude), northeast: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude));
-    }
-    else{
-      latLngBounds =  LatLngBounds(southwest: pickUpLatLng, northeast: dropOffLatLng);
-    }
-
-    newGoogleMapController.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
-
-    Marker pickUpLocMarker = Marker(
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-      infoWindow: InfoWindow(title: initialPos.placeName, snippet: "My Location"),
-      position: pickUpLatLng,
-      markerId: MarkerId("pickUpId"),
-    );
-
-    Marker dropOffLocMarker = Marker(
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      infoWindow: InfoWindow(title: finalPos.placeName, snippet: "Destination"),
-      position: dropOffLatLng,
-      markerId: MarkerId("dropOffId"),
-    );
-
     setState(() {
-      markersSet.add(pickUpLocMarker);
-      markersSet.add(dropOffLocMarker);
+      markersSet.add(pickUp);
+      markersSet.add(dropOff);
     });
 
     Circle pickUpLocCircle = Circle(
