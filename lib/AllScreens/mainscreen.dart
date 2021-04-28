@@ -38,6 +38,7 @@ class _MainScreenState extends State<MainScreen> {
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
   var showLocationMenu = true;
+  var rideStarted = false;
 
   void locatePosition() async{
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -63,7 +64,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text('Main Screen',style: TextStyle(fontSize: 35),),
+        title: Text('RideSafe',style: TextStyle(fontSize: 35),),
       ),
       drawer: Container(
         color: Colors.white,
@@ -287,6 +288,182 @@ class _MainScreenState extends State<MainScreen> {
               ),
               ),
             ),
+          ),
+
+          //Getting a new container when the ride starts!
+          Visibility(
+            visible: rideStarted,
+            child: Positioned(
+              left: 0.0,
+              right: 0.0,
+              bottom: 0.0,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom:30.0),
+                child: Container(
+                  //color: Colors.black,
+                  height: 350.0,
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(18.0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 16.0,
+                          spreadRadius: 0.5,
+                          offset: Offset(0.7,0.7),
+                        )
+                      ]
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start ,
+                      children: [
+                        SizedBox(height: 20.0,),
+                        Text("Navigation Started", style: TextStyle(fontSize: 25.0,fontFamily: "Brand-Bold",color: Colors.white70),),
+                        Text("Monitoring the directions.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold",color: Colors.white70),),
+                        SizedBox(height: 60.0,width: 40,),
+                        Center(
+                          child: ElevatedButton(
+                            child:  Text("Share Location",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold",color: Colors.white70)),
+                            onPressed: () {
+                              print('Pressed');
+                            },
+                          ),
+
+                        ),
+                        Center(
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.pressed))
+                                    return Color(0xFFBB1929);
+                                  return null; // Use the component's default.
+                                },
+                              ),
+                            ),
+                            child:  Text("Stop Navigation",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold",color: Colors.white70)),
+                            onPressed: () {
+                              print('Pressed');
+                            },
+                          ),
+
+                        ),
+                        /*GestureDetector(
+                          onTap: () async{
+                            var res = await Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
+
+                            if (res == "obtainDirection"){
+                              for(int i=0;i>=0;i++) {
+                                locatePosition();
+                                await getPlaceDirection();
+                                await Future.delayed(Duration(seconds: 5));
+                              }
+                            }
+                          },
+
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black54,
+                                    blurRadius: 6.0,
+                                    spreadRadius: 0.5,
+                                    offset: Offset(0.7,0.7),
+                                  )
+                                ]
+                            ),
+                            /*child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.search,color: Colors.blueAccent,),
+                                  SizedBox(width: 10.0,),
+                                  ElevatedButton(
+                                    child:  Text("Search Drop Off",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold",color: Colors.white70)),
+                                    onPressed: () {
+                                      print('Pressed');
+                                    },
+                                  )
+                                  //Text("Search Drop Off",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold",color: Colors.white70)),
+                                ],
+                              ),
+                            ),*/
+
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                children: [
+                                  //Icon(Icons.search,color: Colors.blueAccent,),
+                                  SizedBox(width: 10.0,),
+                                  ElevatedButton(
+                                    child:  Text("Search Drop Off",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold",color: Colors.white70)),
+                                    onPressed: () {
+                                      print('Pressed');
+                                    },
+                                  )
+                                  //Text("Search Drop Off",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold",color: Colors.white70)),
+                                ],
+                              ),
+                            ),
+
+                          ),
+                        ),*/
+                        /*
+                        SizedBox(height: 24.0,),
+                        Row(
+                          children: [
+                            Icon(Icons.home, color: Colors.grey ),
+                            SizedBox(width: 12.0,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    Provider.of<AppData>(context).pickUpLocation != null
+                                        ? Provider.of<AppData>(context).pickUpLocation.placeName
+                                        : "Add Home",style: TextStyle(fontSize: 21.0,fontFamily: "Brand-Bold",color: Colors.white70,)
+                                ),
+
+
+
+                                SizedBox(height:4.0,),
+                                Text("Your Home Address", style: TextStyle(fontSize: 18.0,fontFamily: "Brand-Bold",color: Colors.white70),),
+
+                              ],
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 10.0,),
+
+                        DividerWidget(),
+
+                        SizedBox(height: 16.0,),
+
+                        Row(
+                          children: [
+                            Icon(Icons.work, color: Colors.grey ),
+                            SizedBox(width: 12.0,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Add Work",style: TextStyle(fontSize: 21.0,fontFamily: "Brand-Bold",color: Colors.white70)),
+                                SizedBox(height:4.0,),
+                                Text("Your Office Address", style: TextStyle(color: Colors.white70,fontSize: 18.0,fontFamily: "Brand-Bold"),),
+
+                              ],
+                            )
+                          ],
+                        ),*/
+                      ],
+                    ),
+                  ),
+
+                ),
+              ),
+            ),
           )
         ],
       ),
@@ -348,6 +525,7 @@ var times = true;
     if (times) {
       //Navigator.pop(context);
       showLocationMenu = false;
+      rideStarted = true;
       times = false;
       LatLngBounds latLngBounds;
       if (pickUpLatLng.latitude > dropOffLatLng.latitude &&
