@@ -7,7 +7,7 @@
 
 
     <application
-        android:label="rider_app"
+        android:label="RideSafe"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

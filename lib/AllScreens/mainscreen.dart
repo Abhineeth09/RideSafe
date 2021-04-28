@@ -301,9 +301,9 @@ class _MainScreenState extends State<MainScreen> {
                 padding: const EdgeInsets.only(bottom:30.0),
                 child: Container(
                   //color: Colors.black,
-                  height: 350.0,
+                  height: 300.0,
                   decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: Colors.white,
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(18.0)),
                       boxShadow: [
                         BoxShadow(
@@ -320,12 +320,16 @@ class _MainScreenState extends State<MainScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start ,
                       children: [
                         SizedBox(height: 20.0,),
-                        Text("Navigation Started", style: TextStyle(fontSize: 25.0,fontFamily: "Brand-Bold",color: Colors.white70),),
-                        Text("Monitoring the directions.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold",color: Colors.white70),),
-                        SizedBox(height: 60.0,width: 40,),
+                        Text("Navigation Started", style: TextStyle(fontSize: 25.0,fontFamily: "Brand-Bold"),),
+                        Text("Monitoring the directions.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),),
+                        DividerWidget(),
+                        Text("Estimated Time of Arrival:", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),),
+                        Center(child: Text("5 minutes.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),)),
+                        DividerWidget(),
+                        //SizedBox(height: 60.0,width: 40,),
                         Center(
                           child: ElevatedButton(
-                            child:  Text("Share Location",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold",color: Colors.white70)),
+                            child:  Text("Share Location",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold")),
                             onPressed: () {
                               print('Pressed');
                             },
@@ -339,13 +343,17 @@ class _MainScreenState extends State<MainScreen> {
                                     (Set<MaterialState> states) {
                                   if (states.contains(MaterialState.pressed))
                                     return Color(0xFFBB1929);
-                                  return null; // Use the component's default.
+                                  return Color(0xFFBB1929); // Use the component's default.
                                 },
                               ),
                             ),
-                            child:  Text("Stop Navigation",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold",color: Colors.white70)),
+                            child:  Text("Stop Navigation",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold")),
                             onPressed: () {
                               print('Pressed');
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => MainScreen()));
+                              rideStarted=false;
+                              showLocationMenu=true;
                             },
                           ),
 

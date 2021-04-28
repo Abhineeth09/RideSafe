@@ -11,6 +11,7 @@ import 'package:rider_app/configMaps.dart';
 class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
+  static const String idScreen = 'search';
 }
 
 class _SearchScreenState extends State<SearchScreen> {
