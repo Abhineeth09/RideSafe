@@ -1,6 +1,7 @@
 import 'dart:async';
 //import 'dart:html';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
@@ -208,6 +209,15 @@ class _MainScreenState extends State<MainScreen> {
                                 locatePosition();
                                 await getPlaceDirection();
                                 await Future.delayed(Duration(seconds: 5));
+                                final FirebaseAuth auth = FirebaseAuth.instance;
+
+                                void inputData() {
+                                  final User user = auth.currentUser;
+                                  final uid = user.uid;
+                                  print("User ID is : "+uid);
+                                  // here you write the codes to input the data into firestore
+                                }
+                                inputData();
                               }
                             }
                           },

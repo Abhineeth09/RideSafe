@@ -24,7 +24,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               SizedBox(height: 35.0,),
               Image(
-                  image: AssetImage("images/logo.png"),
+                  image: AssetImage("images/Ridesafe-3.png"),
                 width: 390.0,
                 height: 250.0,
                 alignment: Alignment.center,
@@ -159,7 +159,7 @@ class LoginScreen extends StatelessWidget {
           displayToastMessage("User not found! Please create a new account.", context);
         }
       });
-      displayToastMessage("Congratulations! Your account has been created.", context);
+      displayToastMessage("Login Successful", context);
 
       Navigator.pushNamedAndRemoveUntil(context, MainScreen.idScreen, (route) => false);
     }

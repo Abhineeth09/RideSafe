@@ -26,7 +26,7 @@ class RegistrationScreen extends StatelessWidget {
             children: [
               SizedBox(height: 20.0,),
               Image(
-                image: AssetImage("images/logo.png"),
+                image: AssetImage("images/Ridesafe-3.png"),
                 width: 390.0,
                 height: 250.0,
                 alignment: Alignment.center,
