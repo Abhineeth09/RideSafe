@@ -27,6 +27,9 @@ class MainScreen extends StatefulWidget {
 var isSafe=true;
 var showWarning=true;
 var initialPos, finalPos, pickUpLatLng, dropOffLatLng;
+var uid;
+int counter = 0, timeInterval=30;
+Position currentPosition;
 class _MainScreenState extends State<MainScreen> {
 
 
@@ -40,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
   List<LatLng> pLineCoordinates = [];
   Set<Polyline> polylineSet = {};
 
-  Position currentPosition;
+  //Position currentPosition;
   var geoLocator = Geolocator();
   double bottomPaddingOfMap = 0;
 
@@ -218,14 +221,22 @@ class _MainScreenState extends State<MainScreen> {
                                 locatePosition();
                                 await getPlaceDirection();
                                 await Future.delayed(Duration(seconds: 5));
-                                final FirebaseAuth auth = FirebaseAuth.instance;
-                                final User user = auth.currentUser;
-                                final uid = user.uid;
-                                String restUrl = "https://round-office-312023.wn.r.appspot.com/locationservice?start_latitude=33.72638&start_longitude=-112.17878&end_latitude=42.360081&end_longitude=-71.058884&userID=0";
-                                print("Fetch Results--------------------\n");
-                                print("User ID: "+uid.toString());
-                                print("Start Position: "+ currentPosition.latitude.toString()+", "+currentPosition.longitude.toString());
-                                print("DropOffLatLng:"+ finalPos.latitude.toString() +", "+ finalPos.longitude.toString());
+                                counter+=5;
+                                if (counter%timeInterval==0) {
+                                  final FirebaseAuth auth = FirebaseAuth.instance;
+                                  final User user = auth.currentUser;
+                                  uid = user.uid;
+                                  String restUrl = "https://round-office-312023.wn.r.appspot.com/locationservice?start_latitude=33.72638&start_longitude=-112.17878&end_latitude=42.360081&end_longitude=-71.058884&userID=0";
+                                  print("Fetch Results--------------------\n");
+                                  print("User ID: " + uid.toString());
+                                  print("Start Position: " +
+                                      currentPosition.latitude.toString() +
+                                      ", " +
+                                      currentPosition.longitude.toString());
+                                  print("DropOffLatLng:" +
+                                      finalPos.latitude.toString() + ", " +
+                                      finalPos.longitude.toString());
+                                }
                               }
                             }
                           },
@@ -357,7 +368,7 @@ class _MainScreenState extends State<MainScreen> {
                             },
                           ),),),
                         Visibility(
-                          visible: false,
+                          visible: true,
                           child: Center(child:
                         FutureBuilder<api.Album>(
                         future: api.fetchAlbum(),
@@ -369,12 +380,14 @@ class _MainScreenState extends State<MainScreen> {
                         //print("Safety"+safety);
                         //print('----------s'+api.safe);
                         //print("ETA"+eta.toString());
-                          if (snapshot.data.title=="Safe")
-                              isSafe = true;
+                        if (counter%timeInterval==0 && counter!=0) {
+                          if (snapshot.data.title == "Safe")
+                            isSafe = true;
                           else
-                              isSafe=false;
-                        print(isSafe);
-                        return Text(snapshot.data.title, style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
+                            isSafe = false;
+                        }
+                        print("Safety----------------------"+isSafe.toString());
+                        return Text("", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
                         } else if (snapshot.hasError) {
                         return Text("${snapshot.error}", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
                         }
