@@ -13,6 +13,8 @@ import 'package:rider_app/AllWidgets/progressDialog.dart';
 import 'package:rider_app/Assistants/assistantMethods.dart';
 import 'package:rider_app/DataHandler/appData.dart';
 import 'package:rider_app/DataHandler/ApiData.dart' as api;
+import 'package:rider_app/DataHandler/etaData.dart' as eta;
+
 import 'package:http/http.dart' as http;
 //import 'package:flutter/firebase'
 class MainScreen extends StatefulWidget {
@@ -24,6 +26,7 @@ class MainScreen extends StatefulWidget {
 
 var isSafe=true;
 var showWarning=true;
+var initialPos, finalPos, pickUpLatLng, dropOffLatLng;
 class _MainScreenState extends State<MainScreen> {
 
 
@@ -57,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
     newGoogleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
     String address = await AssistantMethods.searchCoordinateAddress(position, context);
-    print("This is your address ::"+ address);
+    print("This is your address ::"+ address+" Co-ordinates: "+position.latitude.toString()+", "+position.longitude.toString());
 
   }
 
@@ -89,7 +92,7 @@ class _MainScreenState extends State<MainScreen> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                            Text("Profile Name", style: TextStyle(fontSize: 18.0, fontFamily: "Brand-Bold"),),
+                            Text("John Doe", style: TextStyle(fontSize: 18.0, fontFamily: "Brand-Bold"),),
                           SizedBox(height: 6.0,),
                           Text("Visit Profile", style: TextStyle(fontSize: 16.0, fontFamily: "Brand-Bold")),
                         ],
@@ -216,8 +219,13 @@ class _MainScreenState extends State<MainScreen> {
                                 await getPlaceDirection();
                                 await Future.delayed(Duration(seconds: 5));
                                 final FirebaseAuth auth = FirebaseAuth.instance;
+                                final User user = auth.currentUser;
+                                final uid = user.uid;
                                 String restUrl = "https://round-office-312023.wn.r.appspot.com/locationservice?start_latitude=33.72638&start_longitude=-112.17878&end_latitude=42.360081&end_longitude=-71.058884&userID=0";
                                 print("Fetch Results--------------------\n");
+                                print("User ID: "+uid.toString());
+                                print("Start Position: "+ currentPosition.latitude.toString()+", "+currentPosition.longitude.toString());
+                                print("DropOffLatLng:"+ finalPos.latitude.toString() +", "+ finalPos.longitude.toString());
                               }
                             }
                           },
@@ -334,9 +342,23 @@ class _MainScreenState extends State<MainScreen> {
                         Text("Monitoring the directions.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),),
                         DividerWidget(),
                         Text("Estimated Time of Arrival:", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),),
-                        Center(child: Text("5 minutes.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),)),
-
-                        Visibility(child: Center(child:
+                        //Center(child: Text("5 minutes.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),)),
+                        Visibility(
+                          child: Center(child:
+                          FutureBuilder<eta.Album>(
+                            future: eta.fetchAlbum(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(snapshot.data.title+" seconds.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
+                              } else if (snapshot.hasError) {
+                                return Text("${snapshot.error}", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
+                              }
+                              return CircularProgressIndicator();
+                            },
+                          ),),),
+                        Visibility(
+                          visible: false,
+                          child: Center(child:
                         FutureBuilder<api.Album>(
                         future: api.fetchAlbum(),
                         builder: (context, snapshot) {
@@ -613,11 +635,11 @@ class _MainScreenState extends State<MainScreen> {
 var times = true;
   var pickUp,dropOff;
   Future<void> getPlaceDirection() async {
-    var initialPos = Provider.of<AppData>(context, listen: false,).pickUpLocation;
-    var finalPos = Provider.of<AppData>(context, listen: false,).dropOffLocation;
+    initialPos = Provider.of<AppData>(context, listen: false,).pickUpLocation;
+    finalPos = Provider.of<AppData>(context, listen: false,).dropOffLocation;
 
-    var pickUpLatLng = LatLng(initialPos.latitude, initialPos.longitude);
-    var dropOffLatLng = LatLng(finalPos.latitude, finalPos.longitude);
+    pickUpLatLng = LatLng(initialPos.latitude, initialPos.longitude);
+    dropOffLatLng = LatLng(finalPos.latitude, finalPos.longitude);
 
     /*showDialog(
       context: context,
