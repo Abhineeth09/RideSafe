@@ -14,6 +14,7 @@ import 'package:rider_app/Assistants/assistantMethods.dart';
 import 'package:rider_app/DataHandler/appData.dart';
 import 'package:rider_app/DataHandler/ApiData.dart' as api;
 import 'package:rider_app/DataHandler/etaData.dart' as eta;
+import 'package:rider_app/DataHandler/nearDestination.dart' as near;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 
@@ -27,9 +28,11 @@ class MainScreen extends StatefulWidget {
 
 
 var isSafe=true;
+var notify=false;
 var showWarning=true;
 var initialPos, finalPos, pickUpLatLng, dropOffLatLng;
 var uid;
+var isNear=false;
 int counter = 0, timeInterval=30;
 Position currentPosition;
 class _MainScreenState extends State<MainScreen> {
@@ -332,7 +335,7 @@ class _MainScreenState extends State<MainScreen> {
                 padding: const EdgeInsets.only(bottom:30.0),
                 child: Container(
                   //color: Colors.black,
-                  height: 350.0,
+                  height: 380.0,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(18.0)),
@@ -362,7 +365,7 @@ class _MainScreenState extends State<MainScreen> {
                             future: eta.fetchAlbum(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                return Text(snapshot.data.title+" seconds.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
+                                return Text((int.parse(snapshot.data.title)/60).round().toString()+" minute/s.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
                               } else if (snapshot.hasError) {
                                 return Text("${snapshot.error}", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
                               }
@@ -396,6 +399,30 @@ class _MainScreenState extends State<MainScreen> {
                         return CircularProgressIndicator();
                         },
                         ),),),
+
+                        Visibility(
+                          visible: true,
+                          child: Center(child:
+                          FutureBuilder<near.Album>(
+                            future: near.fetchAlbum(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                print("Near-----------:::::::"+snapshot.data.title.toString());
+                                if (snapshot.data.title == "Sleeping")
+                                  return Text("", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
+                                else {
+                                  return Text("Alert: Arriving Soon!",
+                                      style: TextStyle(fontSize: 25.0,
+                                          fontFamily: "Brand-Bold", color: Colors.red));
+                                }
+                                return Text("", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
+                              } else if (snapshot.hasError) {
+                                return Text("${snapshot.error}", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
+                              }
+                              return CircularProgressIndicator();
+                            },
+                          ),),),
+
                         DividerWidget(),
                         //SizedBox(height: 60.0,width: 40,),
                         Center(
@@ -417,6 +444,8 @@ class _MainScreenState extends State<MainScreen> {
                           ),
 
                         ),
+
+
                         Center(
                           child: ElevatedButton(
                             style: ButtonStyle(

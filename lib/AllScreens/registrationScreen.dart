@@ -26,7 +26,7 @@ class RegistrationScreen extends StatelessWidget {
             children: [
               SizedBox(height: 20.0,),
               Image(
-                image: AssetImage("images/Ridesafe-3.png"),
+                image: AssetImage("images/Ridesafe.PNG"),
                 width: 390.0,
                 height: 250.0,
                 alignment: Alignment.center,
@@ -46,12 +46,12 @@ class RegistrationScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         labelText: "Name",
                         labelStyle: TextStyle(
-                          fontSize: 25.0,
+                          fontSize: 25.0,fontFamily: "Brand Bold"
                         ),
-                        hintStyle: TextStyle( color: Colors.grey, fontSize: 25.0),
+                        hintStyle: TextStyle( color: Colors.grey, fontSize: 25.0,fontFamily: "Brand Bold"),
 
                       ),
-                      style: TextStyle(fontSize: 25.0),
+                      style: TextStyle(fontSize: 25.0,fontFamily: "Brand Bold"),
                     ),
                     TextField(
                       controller: emailTextEditingController,
@@ -59,9 +59,9 @@ class RegistrationScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         labelText: "Email",
                         labelStyle: TextStyle(
-                          fontSize: 25.0,
+                          fontSize: 25.0,fontFamily: "Brand Bold"
                         ),
-                        hintStyle: TextStyle( color: Colors.grey, fontSize: 25.0),
+                        hintStyle: TextStyle( color: Colors.grey, fontSize: 25.0,fontFamily: "Brand Bold"),
 
                       ),
                       style: TextStyle(fontSize: 25.0),
@@ -72,9 +72,9 @@ class RegistrationScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         labelText: "Phone",
                         labelStyle: TextStyle(
-                          fontSize: 25.0,
+                          fontSize: 25.0,fontFamily: "Brand Bold"
                         ),
-                        hintStyle: TextStyle( color: Colors.grey, fontSize: 25.0),
+                        hintStyle: TextStyle( color: Colors.grey, fontSize: 25.0,fontFamily: "Brand Bold"),
 
                       ),
                       style: TextStyle(fontSize: 25.0),
@@ -85,16 +85,16 @@ class RegistrationScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         labelText: "Password",
                         labelStyle: TextStyle(
-                          fontSize: 25.0,
+                          fontSize: 25.0,fontFamily: "Brand Bold"
                         ),
-                        hintStyle: TextStyle( color: Colors.grey, fontSize: 25.0),
+                        hintStyle: TextStyle( color: Colors.grey, fontSize: 25.0,fontFamily: "Brand Bold"),
 
                       ),
-                      style: TextStyle(fontSize: 20.0),
+                      style: TextStyle(fontSize: 20.0,fontFamily: "Brand Bold"),
                     ),
-                    SizedBox(height: 2.0,),
+                    SizedBox(height: 20.0,),
                     RaisedButton(
-                      color: Colors.yellow,
+                      color: Colors.cyan,
                       textColor: Colors.white,
                       child: Container(
                         height: 50.0,
@@ -140,7 +140,7 @@ class RegistrationScreen extends StatelessWidget {
                 },
                 child: Text(
                     "Already have an account? Login Here!",
-                  style: TextStyle(fontSize: 25),
+                  style: TextStyle(fontSize: 20,fontFamily: "Brand Bold"),
                 ),
               ),
               SizedBox(height: 1.0,),

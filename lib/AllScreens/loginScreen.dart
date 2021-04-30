@@ -24,7 +24,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               SizedBox(height: 35.0,),
               Image(
-                  image: AssetImage("images/Ridesafe-3.png"),
+                  image: AssetImage("images/Ridesafe.PNG"),
                 width: 390.0,
                 height: 250.0,
                 alignment: Alignment.center,
@@ -32,7 +32,7 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 1.0,),
               Text(
                 "Login",
-              style: TextStyle(fontSize: 24.0,fontFamily: "Brand Bold"),
+              style: TextStyle(fontSize: 28.0,fontFamily: "Brand Bold"),
               textAlign: TextAlign.center
               ),
               Padding(padding: EdgeInsets.all(20.0),
@@ -44,29 +44,30 @@ class LoginScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       labelText: "Email",
                       labelStyle: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 20.0,fontFamily: "Brand Bold"
                       ),
-                      hintStyle: TextStyle( color: Colors.grey, fontSize: 10.0),
+                      hintStyle: TextStyle( color: Colors.grey, fontSize: 19.0,fontFamily: "Brand Bold"),
 
                     ),
                     style: TextStyle(fontSize: 20.0),
                   ),
+                  SizedBox(height: 3.0,),
                   TextField(
                     controller: passwordTextEditingController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: "Password",
                       labelStyle: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 20.0,fontFamily: "Brand Bold"
                       ),
-                      hintStyle: TextStyle( color: Colors.grey, fontSize: 10.0),
+                      hintStyle: TextStyle( color: Colors.grey, fontSize: 19.0,fontFamily: "Brand Bold"),
 
                     ),
-                    style: TextStyle(fontSize: 20.0),
+                    style: TextStyle(fontSize: 20.0,fontFamily: "Brand Bold"),
                   ),
-                  SizedBox(height: 2.0,),
+                  SizedBox(height: 20.0,),
                   RaisedButton(
-                    color: Colors.yellow,
+                    color: Colors.cyan,
                     textColor: Colors.white,
                     child: Container(
                       height: 50.0,
@@ -100,7 +101,7 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
               ),
-              SizedBox(height: 1.0,),
+              SizedBox(height: 5.0,),
               TextButton(
                 onPressed: ()
                 {
@@ -108,7 +109,7 @@ class LoginScreen extends StatelessWidget {
                 },
                 child: Text(
                   "Do not have an account? Register Here!",
-                  style: TextStyle(fontSize: 25.0),
+                  style: TextStyle(fontSize: 20.0,fontFamily: "Brand Bold"),
                 ),
               ),
               SizedBox(height: 1.0,),
