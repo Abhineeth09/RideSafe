@@ -14,6 +14,7 @@ import 'package:rider_app/Assistants/assistantMethods.dart';
 import 'package:rider_app/DataHandler/appData.dart';
 import 'package:rider_app/DataHandler/ApiData.dart' as api;
 import 'package:rider_app/DataHandler/etaData.dart' as eta;
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:http/http.dart' as http;
 //import 'package:flutter/firebase'
@@ -624,7 +625,9 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                             child:  Text("Emergency SOS",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold")),
                             onPressed: () {
-                              print('Pressed');
+                              print('SOS Pressed');
+                              //launch("tel://911");
+                              launch("tel://911");
                               //Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
                               //rideStarted=false;
                               //showLocationMenu=true;

@@ -38,6 +38,7 @@ dependencies:
   provider: ^5.0.0
   js: ^0.6.3
   flutter_polyline_points: ^0.2.6
+  url_launcher: ^6.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
