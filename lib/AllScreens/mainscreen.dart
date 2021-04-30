@@ -15,6 +15,7 @@ import 'package:rider_app/DataHandler/appData.dart';
 import 'package:rider_app/DataHandler/ApiData.dart' as api;
 import 'package:rider_app/DataHandler/etaData.dart' as eta;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 import 'package:http/http.dart' as http;
 //import 'package:flutter/firebase'
@@ -400,8 +401,18 @@ class _MainScreenState extends State<MainScreen> {
                         Center(
                           child: ElevatedButton(
                             child:  Text("Share Location",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold")),
-                            onPressed: () {
-                              print('Pressed');
+                            onPressed: () async {
+                              final Email email = Email(
+                                body: 'Find my location at '+"http://maps.google.com/maps?q=description+(name)+%40"+currentPosition.latitude.toString()+","+currentPosition.longitude.toString(),
+                                subject: "Hi! Here's my current location.",
+                                recipients: ['example@example.com'],
+                                cc: ['cc@example.com'],
+                                bcc: ['bcc@example.com'],
+                                //attachmentPaths: ['/path/to/attachment.zip'],
+                                isHTML: false,
+                              );
+
+                              await FlutterEmailSender.send(email);
                             },
                           ),
 
@@ -583,8 +594,18 @@ class _MainScreenState extends State<MainScreen> {
                         Center(
                           child: ElevatedButton(
                             child:  Text("Share Location",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold")),
-                            onPressed: () {
-                              print('Pressed');
+                            onPressed: () async{
+                              final Email email = Email(
+                                body: 'Find my location at '+"http://maps.google.com/maps?q=description+(name)+%40"+currentPosition.latitude.toString()+","+currentPosition.longitude.toString(),
+                                subject: "Hi! Here's my current location.",
+                                recipients: ['example@example.com'],
+                                cc: ['cc@example.com'],
+                                bcc: ['bcc@example.com'],
+                                //attachmentPaths: ['/path/to/attachment.zip'],
+                                isHTML: false,
+                              );
+
+                              await FlutterEmailSender.send(email);
                             },
                           ),
 
