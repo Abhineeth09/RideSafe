@@ -7,7 +7,7 @@ import 'package:rider_app/AllScreens/mainscreen.dart';
 import 'package:rider_app/AllScreens/registrationScreen.dart';
 import 'package:rider_app/AllScreens/searchScreen.dart';
 import 'package:rider_app/DataHandler/appData.dart';
-
+import 'package:rider_app/DataHandler/ApiData.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           fontFamily: "Signatra",
           primarySwatch: Colors.blue,
         ),
-        initialRoute: RegistrationScreen.idScreen,
+        initialRoute: MainScreen.idScreen,//RegistrationScreen.idScreen,
         //initialRoute: LoginScreen.idScreen,
         routes: {
           RegistrationScreen.idScreen: (context) => RegistrationScreen(),

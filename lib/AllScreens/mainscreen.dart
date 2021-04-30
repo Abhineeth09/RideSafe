@@ -12,6 +12,7 @@ import 'package:rider_app/AllWidgets/Divider.dart';
 import 'package:rider_app/AllWidgets/progressDialog.dart';
 import 'package:rider_app/Assistants/assistantMethods.dart';
 import 'package:rider_app/DataHandler/appData.dart';
+import 'package:http/http.dart' as http;
 //import 'package:flutter/firebase'
 class MainScreen extends StatefulWidget {
   static const String idScreen = 'main';
@@ -211,13 +212,23 @@ class _MainScreenState extends State<MainScreen> {
                                 await Future.delayed(Duration(seconds: 5));
                                 final FirebaseAuth auth = FirebaseAuth.instance;
 
-                                void inputData() {
+                                //void inputData() {
                                   final User user = auth.currentUser;
                                   final uid = user.uid;
                                   print("User ID is : "+uid);
                                   // here you write the codes to input the data into firestore
+                                //}
+                                //inputData();
+                                //Future<List<Fruit>> fetchFruit() async {
+                                  String restUrl = "https://round-office-312023.wn.r.appspot.com/locationservice?start_latitude=33.72638&start_longitude=-112.17878&end_latitude=42.360081&end_longitude=-71.058884&userID=0";
+                                  //final response = await http.get(restUrl);
+                                Future<http.Response> fetchAlbum() {
+                                  return http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
                                 }
-                                inputData();
+                                print(fetchAlbum());
+
+
+
                               }
                             }
                           },
