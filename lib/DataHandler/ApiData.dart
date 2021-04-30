@@ -3,10 +3,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+String safe="Not Set";
 Future<Album> fetchAlbum() async {
   final response =
-  await http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+  await http.get(Uri.parse('https://round-office-312023.wn.r.appspot.com/locationservice?start_latitude=31.72638&start_longitude=-112.17878&end_latitude=42.360081&end_longitude=-71.058884&userID=0'));
 
   // Appropriate action depending upon the
   // server response
@@ -26,9 +26,9 @@ class Album {
 
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
-      userId: json['userId'],
-      id: json['id'],
-      title: json['title'],
+      //userId: json['userId'],
+      //id: json['id'],
+      title: json['safety_level'],
     );
   }
 }
@@ -39,16 +39,17 @@ class MyApp extends StatefulWidget {
   MyApp({Key key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   Future<Album> futureAlbum;
 
   @override
   void initState() {
     super.initState();
     futureAlbum = fetchAlbum();
+    print(futureAlbum);
   }
 
   @override
@@ -67,6 +68,7 @@ class _MyAppState extends State<MyApp> {
             future: futureAlbum,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                safe = snapshot.data.title;
                 return Text(snapshot.data.title);
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");

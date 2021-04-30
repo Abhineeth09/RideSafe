@@ -12,6 +12,7 @@ import 'package:rider_app/AllWidgets/Divider.dart';
 import 'package:rider_app/AllWidgets/progressDialog.dart';
 import 'package:rider_app/Assistants/assistantMethods.dart';
 import 'package:rider_app/DataHandler/appData.dart';
+import 'package:rider_app/DataHandler/ApiData.dart' as api;
 import 'package:http/http.dart' as http;
 //import 'package:flutter/firebase'
 class MainScreen extends StatefulWidget {
@@ -21,8 +22,11 @@ class MainScreen extends StatefulWidget {
 }
 
 
-
+var isSafe=true;
+var showWarning=true;
 class _MainScreenState extends State<MainScreen> {
+
+
 
   Completer<GoogleMapController> _controllerGoogleMap = Completer();
   GoogleMapController newGoogleMapController;
@@ -206,29 +210,14 @@ class _MainScreenState extends State<MainScreen> {
                             var res = await Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
 
                             if (res == "obtainDirection"){
+                              String safety="Not set";
                               for(int i=0;i>=0;i++) {
                                 locatePosition();
                                 await getPlaceDirection();
                                 await Future.delayed(Duration(seconds: 5));
                                 final FirebaseAuth auth = FirebaseAuth.instance;
-
-                                //void inputData() {
-                                  final User user = auth.currentUser;
-                                  final uid = user.uid;
-                                  print("User ID is : "+uid);
-                                  // here you write the codes to input the data into firestore
-                                //}
-                                //inputData();
-                                //Future<List<Fruit>> fetchFruit() async {
-                                  String restUrl = "https://round-office-312023.wn.r.appspot.com/locationservice?start_latitude=33.72638&start_longitude=-112.17878&end_latitude=42.360081&end_longitude=-71.058884&userID=0";
-                                  //final response = await http.get(restUrl);
-                                Future<http.Response> fetchAlbum() {
-                                  return http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
-                                }
-                                print(fetchAlbum());
-
-
-
+                                String restUrl = "https://round-office-312023.wn.r.appspot.com/locationservice?start_latitude=33.72638&start_longitude=-112.17878&end_latitude=42.360081&end_longitude=-71.058884&userID=0";
+                                print("Fetch Results--------------------\n");
                               }
                             }
                           },
@@ -313,7 +302,7 @@ class _MainScreenState extends State<MainScreen> {
 
           //Getting a new container when the ride starts!
           Visibility(
-            visible: rideStarted,
+            visible: (rideStarted && isSafe),
             child: Positioned(
               left: 0.0,
               right: 0.0,
@@ -322,7 +311,7 @@ class _MainScreenState extends State<MainScreen> {
                 padding: const EdgeInsets.only(bottom:30.0),
                 child: Container(
                   //color: Colors.black,
-                  height: 300.0,
+                  height: 350.0,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(18.0)),
@@ -346,6 +335,30 @@ class _MainScreenState extends State<MainScreen> {
                         DividerWidget(),
                         Text("Estimated Time of Arrival:", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),),
                         Center(child: Text("5 minutes.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),)),
+
+                        Visibility(child: Center(child:
+                        FutureBuilder<api.Album>(
+                        future: api.fetchAlbum(),
+                        builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                        //safety = snapshot.data.title;
+                        //s=safety;
+                        //int eta = snapshot.data.ETA;
+                        //print("Safety"+safety);
+                        //print('----------s'+api.safe);
+                        //print("ETA"+eta.toString());
+                          if (snapshot.data.title=="Safe")
+                              isSafe = true;
+                          else
+                              isSafe=false;
+                        print(isSafe);
+                        return Text(snapshot.data.title, style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
+                        } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"));
+                        }
+                        return CircularProgressIndicator();
+                        },
+                        ),),),
                         DividerWidget(),
                         //SizedBox(height: 60.0,width: 40,),
                         Center(
@@ -493,6 +506,105 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
+          ),
+          //Dialog box if ride is unsafe
+          Visibility(
+            visible: !isSafe,
+            child: Positioned(
+              left: 0.0,
+              right: 0.0,
+              bottom: 0.0,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom:30.0),
+                child: Container(
+                  //color: Colors.black,
+                  height: 330.0,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(18.0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 16.0,
+                          spreadRadius: 0.5,
+                          offset: Offset(0.7,0.7),
+                        )
+                      ]
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start ,
+                      children: [
+                        SizedBox(height: 20.0,),
+                        Text("Warning!", style: TextStyle(fontSize: 25.0,fontFamily: "Brand-Bold",color: Colors.red),),
+                        Text("Please verify your route.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),),
+                        DividerWidget(),
+                        //Text("Estimated Time of Arrival:", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),),
+                        //Center(child: Text("5 minutes.", style: TextStyle(fontSize: 25.0, fontFamily: "Brand-Bold"),)),
+                        DividerWidget(),
+                        //SizedBox(height: 60.0,width: 40,),
+                        Center(
+                          child: ElevatedButton(
+                            child:  Text("Share Location",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold")),
+                            onPressed: () {
+                              print('Pressed');
+                            },
+                          ),
+
+                        ),
+                        Center(
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.pressed))
+                                    return Color(0xFFBB1929);
+                                  return Color(0xFFBB1929); // Use the component's default.
+                                },
+                              ),
+                            ),
+                            child:  Text("Ignore",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold")),
+                            onPressed: () {
+                              print('Pressed');
+                              //Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                              //rideStarted=false;
+                              //showLocationMenu=true;
+                              //showWarning=false;
+                              isSafe=true;
+                            },
+                          ),
+
+                        ),
+                        Center(
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.pressed))
+                                    return Color(0xFFBB1929);
+                                  return Color(0xFFBB1929); // Use the component's default.
+                                },
+                              ),
+                            ),
+                            child:  Text("Emergency SOS",style: TextStyle(fontSize: 20.0,fontFamily: "Brand-Bold")),
+                            onPressed: () {
+                              print('Pressed');
+                              //Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                              //rideStarted=false;
+                              //showLocationMenu=true;
+                            },
+                          ),
+
+                        ),
+
+                      ],
+                    ),
+                  ),
+
+                ),
+              ),
+            ),
           )
         ],
       ),
@@ -626,3 +738,5 @@ var times = true;
   }
 
 }
+
+
