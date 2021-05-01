@@ -21,11 +21,11 @@ class LocationService(Resource):
         parser.add_argument('userID', required=True, type=int)
         args = parser.parse_args()
         projectID = "flutter-ade80"
-        key = "AIzaSyCnNxdhPn8jn5lQzJmCYm1YfNl9lhBX-H0"
+        key = "" #PROJECT KEY
         doc = f"users/{args['userID']}"
         url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?key={key}"
         patch_url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?updateMask.fieldPaths=Distance&updateMask.fieldPaths=ETA&updateMask.fieldPaths=Latitude&updateMask.fieldPaths=Longitude&update.fieldPaths=Past_Locations&key={key}"
-        Google_API = "AIzaSyAq1sk1ecJPGLeaThghkDCpNSS9AtAt09s"
+        Google_API = "" # GOOGLE API KEY
         api_request = f"https://maps.googleapis.com/maps/api/directions/json?origin={args['start_latitude']},{args['start_longitude']}&destination={args['end_latitude']},{args['end_longitude']}&key={Google_API}"
         to_return = ""
 
@@ -66,7 +66,7 @@ class ShareLocationService(Resource):
         parser.add_argument('userID', required=True, type=int)
         args = parser.parse_args()
         projectID = "flutter-ade80"
-        key = "AIzaSyCnNxdhPn8jn5lQzJmCYm1YfNl9lhBX-H0"
+        key = "" #PROJECT KEY
         doc = f"users/{args['friendID']}"
         url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?key={key}"
         to_return = "Not Authenticated"
@@ -98,7 +98,7 @@ class GeofenceService(Resource):
         parser.add_argument('time_tolerance', required=True, type=float)
         parser.add_argument('userID', required=True, type=int)
         args = parser.parse_args()
-        Google_API = "AIzaSyAq1sk1ecJPGLeaThghkDCpNSS9AtAt09s"
+        Google_API = "" # GOOGLE API KEY
         api_request = f"https://maps.googleapis.com/maps/api/directions/json?origin={args['start_latitude']},{args['start_longitude']}&destination={args['end_latitude']},{args['end_longitude']}&key={Google_API}"
         to_return = ""
 
@@ -122,10 +122,9 @@ class RegisterUserService(Resource):
         userID = 0
         args = parser.parse_args()
         projectID = "flutter-ade80"
-        key = "AIzaSyCnNxdhPn8jn5lQzJmCYm1YfNl9lhBX-H0"
+        key = "" # PROJECT KEY
         doc = f"users/"
         url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?pageSize=5000&mask.fieldPaths=name&key={key}"
-        Google_API = "AIzaSyAq1sk1ecJPGLeaThghkDCpNSS9AtAt09s"
         to_return = "Unsuccessful"
         distance = 9999999.9
         ETA = 999999.9
@@ -172,11 +171,10 @@ class AddFriendService(Resource):
         parser.add_argument('userID', required=True, type=int)
         args = parser.parse_args()
         projectID = "flutter-ade80"
-        key = "AIzaSyCnNxdhPn8jn5lQzJmCYm1YfNl9lhBX-H0"
+        key = "" # PROJECT KEY
         doc = f"users/{args['userID']}"
         url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?key={key}"
         patch_url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?updateMask.fieldPaths=Friends&key={key}"
-        Google_API = "AIzaSyAq1sk1ecJPGLeaThghkDCpNSS9AtAt09s"
         to_return = ""
 
         response2 = requests.get(url)
@@ -217,11 +215,10 @@ class DeleteFriendService(Resource):
         parser.add_argument('userID', required=True, type=int)
         args = parser.parse_args()
         projectID = "flutter-ade80"
-        key = "AIzaSyCnNxdhPn8jn5lQzJmCYm1YfNl9lhBX-H0"
+        key = "" # PROJECT KEY
         doc = f"users/{args['userID']}"
         url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?key={key}"
         patch_url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?updateMask.fieldPaths=Friends&key={key}"
-        Google_API = "AIzaSyAq1sk1ecJPGLeaThghkDCpNSS9AtAt09s"
         to_return = ""
 
         response2 = requests.get(url)
