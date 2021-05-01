@@ -13,13 +13,13 @@ def homepage():
 
 class LocationService(Resource):
     def get(self):
-        parser = reqparse.RequestParser()  # initialize parser
-        parser.add_argument('start_latitude', required=True, type=float)  # add args
+        parser = reqparse.RequestParser()
+        parser.add_argument('start_latitude', required=True, type=float)
         parser.add_argument('start_longitude', required=True, type=float)
         parser.add_argument('end_latitude', required=True, type=float)
         parser.add_argument('end_longitude', required=True, type=float)
         parser.add_argument('userID', required=True, type=int)
-        args = parser.parse_args()  # parse arguments to dictionary
+        args = parser.parse_args()
         projectID = "flutter-ade80"
         key = "AIzaSyCnNxdhPn8jn5lQzJmCYm1YfNl9lhBX-H0"
         doc = f"users/{args['userID']}"
@@ -61,10 +61,10 @@ class LocationService(Resource):
 
 class ShareLocationService(Resource):
     def get(self):
-        parser = reqparse.RequestParser()  # initialize parser
+        parser = reqparse.RequestParser()
         parser.add_argument('friendID', required=True, type=int)
         parser.add_argument('userID', required=True, type=int)
-        args = parser.parse_args()  # parse arguments to dictionary
+        args = parser.parse_args()
         projectID = "flutter-ade80"
         key = "AIzaSyCnNxdhPn8jn5lQzJmCYm1YfNl9lhBX-H0"
         doc = f"users/{args['friendID']}"
@@ -76,7 +76,7 @@ class ShareLocationService(Resource):
         latitude = json_obj2['fields']['Latitude']['doubleValue']
         longitude = json_obj2['fields']['Longitude']['doubleValue']
         friend_list = json_obj2['fields']['Friends']['arrayValue']['values']
-        #to_return = friend_list
+
         x = 0
         for friend in friend_list:
             check = friend_list[x]['integerValue']
@@ -90,19 +90,14 @@ class ShareLocationService(Resource):
 
 class GeofenceService(Resource):
     def get(self):
-        parser = reqparse.RequestParser()  # initialize parser
-        parser.add_argument('start_latitude', required=True, type=float)  # add args
+        parser = reqparse.RequestParser()
+        parser.add_argument('start_latitude', required=True, type=float)
         parser.add_argument('start_longitude', required=True, type=float)
         parser.add_argument('end_latitude', required=True, type=float)
         parser.add_argument('end_longitude', required=True, type=float)
         parser.add_argument('time_tolerance', required=True, type=float)
         parser.add_argument('userID', required=True, type=int)
-        args = parser.parse_args()  # parse arguments to dictionary
-        #projectID = "flutter-ade80"
-        #key = "AIzaSyCnNxdhPn8jn5lQzJmCYm1YfNl9lhBX-H0"
-        #doc = f"users/{args['userID']}"
-        #url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?key={key}"
-        #patch_url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?updateMask.fieldPaths=Distance&updateMask.fieldPaths=ETA&key={key}"
+        args = parser.parse_args()
         Google_API = "AIzaSyAq1sk1ecJPGLeaThghkDCpNSS9AtAt09s"
         api_request = f"https://maps.googleapis.com/maps/api/directions/json?origin={args['start_latitude']},{args['start_longitude']}&destination={args['end_latitude']},{args['end_longitude']}&key={Google_API}"
         to_return = ""
@@ -111,19 +106,6 @@ class GeofenceService(Resource):
         json_obj = json.loads(response.text)
         distance = json_obj['routes'][0]['legs'][0]['distance']['value']
         ETA = json_obj['routes'][0]['legs'][0]['duration']['value']
-
-        #response2 = requests.get(url)
-        #json_obj2 = json.loads(response2.text)
-        #prev_distance = json_obj2['fields']['Distance']['doubleValue']
-        #prev_ETA =  json_obj2['fields']['ETA']['doubleValue']
-
-        #myobj = "{\r\n\"fields\": {\r\n\"Distance\": {\r\n\"doubleValue\":"
-        #myobj2 = f"{myobj}{distance}"
-        #myobj3 = "\r\n},\r\n\"ETA\": {\r\n\"doubleValue\":"
-        #myobj4 = "\r\n}\r\n}\r\n}"
-        #myobj5 = f"{myobj2}{myobj3}{ETA}{myobj4}"
-        #response3 = requests.patch(patch_url, data = myobj5)
-        #json_obj3 = json.loads(response3.text)
 
         if (ETA+30) < (args['time_tolerance']*60):
             to_return = "Arriving"
@@ -136,9 +118,9 @@ class GeofenceService(Resource):
 
 class RegisterUserService(Resource):
     def get(self):
-        parser = reqparse.RequestParser()  # initialize parser
+        parser = reqparse.RequestParser()
         userID = 0
-        args = parser.parse_args()  # parse arguments to dictionary
+        args = parser.parse_args()
         projectID = "flutter-ade80"
         key = "AIzaSyCnNxdhPn8jn5lQzJmCYm1YfNl9lhBX-H0"
         doc = f"users/"
@@ -185,29 +167,22 @@ class RegisterUserService(Resource):
 
 class AddFriendService(Resource):
     def get(self):
-        parser = reqparse.RequestParser()  # initialize parser
+        parser = reqparse.RequestParser()
         parser.add_argument('toAdd', required=True, type=int)
         parser.add_argument('userID', required=True, type=int)
-        args = parser.parse_args()  # parse arguments to dictionary
+        args = parser.parse_args()
         projectID = "flutter-ade80"
         key = "AIzaSyCnNxdhPn8jn5lQzJmCYm1YfNl9lhBX-H0"
         doc = f"users/{args['userID']}"
         url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?key={key}"
         patch_url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?updateMask.fieldPaths=Friends&key={key}"
         Google_API = "AIzaSyAq1sk1ecJPGLeaThghkDCpNSS9AtAt09s"
-        #api_request = f"https://maps.googleapis.com/maps/api/directions/json?origin={args['start_latitude']},{args['start_longitude']}&destination={args['end_latitude']},{args['end_longitude']}&key={Google_API}"
         to_return = ""
-
-        #response = requests.get(api_request)
-        #json_obj = json.loads(response.text)
-        #distance = json_obj['routes'][0]['legs'][0]['distance']['value']
-        #ETA = json_obj['routes'][0]['legs'][0]['duration']['value']
 
         response2 = requests.get(url)
         json_obj2 = json.loads(response2.text)
         friend_list = json_obj2['fields']['Friends']['arrayValue']['values']
-        #prev_distance = json_obj2['fields']['Distance']['doubleValue']
-        #prev_ETA =  json_obj2['fields']['ETA']['doubleValue']
+
         friends = []
         x = 0
         for friend in friend_list:
@@ -230,12 +205,6 @@ class AddFriendService(Resource):
         response3 = requests.patch(patch_url, data = myobj3)
         json_obj3 = json.loads(response3.text)
         to_return = "Success"
-        #to_return = f"{json_obj3}"
-
-        #if prev_distance > distance and prev_ETA > ETA:
-        #    to_return = "Warning"
-        #else:
-        #    to_return = "Safe"
 
         return {
             'friend_added': f"{to_return}"
@@ -243,29 +212,22 @@ class AddFriendService(Resource):
 
 class DeleteFriendService(Resource):
     def get(self):
-        parser = reqparse.RequestParser()  # initialize parser
+        parser = reqparse.RequestParser()
         parser.add_argument('toDelete', required=True, type=int)
         parser.add_argument('userID', required=True, type=int)
-        args = parser.parse_args()  # parse arguments to dictionary
+        args = parser.parse_args()
         projectID = "flutter-ade80"
         key = "AIzaSyCnNxdhPn8jn5lQzJmCYm1YfNl9lhBX-H0"
         doc = f"users/{args['userID']}"
         url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?key={key}"
         patch_url = f"https://firestore.googleapis.com/v1beta1/projects/{projectID}/databases/(default)/documents/{doc}?updateMask.fieldPaths=Friends&key={key}"
         Google_API = "AIzaSyAq1sk1ecJPGLeaThghkDCpNSS9AtAt09s"
-        #api_request = f"https://maps.googleapis.com/maps/api/directions/json?origin={args['start_latitude']},{args['start_longitude']}&destination={args['end_latitude']},{args['end_longitude']}&key={Google_API}"
         to_return = ""
-
-        #response = requests.get(api_request)
-        #json_obj = json.loads(response.text)
-        #distance = json_obj['routes'][0]['legs'][0]['distance']['value']
-        #ETA = json_obj['routes'][0]['legs'][0]['duration']['value']
 
         response2 = requests.get(url)
         json_obj2 = json.loads(response2.text)
         friend_list = json_obj2['fields']['Friends']['arrayValue']['values']
-        #prev_distance = json_obj2['fields']['Distance']['doubleValue']
-        #prev_ETA =  json_obj2['fields']['ETA']['doubleValue']
+
         friends = []
         x = 0
         for friend in friend_list:
