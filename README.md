@@ -1,7 +1,7 @@
 # RideSafe
 
 
-**CSE 546 —**  **RideSafe**
+**RideSafe**
 
 _[Abhineeth Mishra](https://www.linkedin.com/in/abhineethmishra/), Justin Colyar, Ayushi Shekhar_
 
