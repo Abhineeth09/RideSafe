@@ -11,20 +11,10 @@ _Abhineeth Mishra, Justin Colyar, Ayushi Shekhar_
 Traveling can be a tiring and depleting task. One of the ways we feel that travel is not being addressed at the moment is for traveling sleeping passengers. Oftentimes people have to guess or stress about falling asleep on the subways, buses, or even a Lyft ride if they are fatigued from lack of sleep, extended travel, or drinking. Traditional tracking apps and safety features rely on manual intervention on behalf of an additional party such as family checking the user&#39;s location and do little to notify the user about arriving at their destination, waking the user, and providing automatic safety checks.
 
 
-# **Background**
-
-It is always painful to miss your stop , reverse your route , go to your stop , and imagine the pain if that would have been the last bus. The existing modern technology and solutions for today are scattered and inconsistent. In our research, we could not find any automatic self-tracking app for sleeping and travel safety. Popular tracking apps that exist limit functionality to simple location tracking and sharing with friends. Moreover, ride-sharing applications provide limited and inconsistent safety mechanisms for traveling. For instance, Lyft allows the user to share their location with family and detect stopping for significant portions of time to verify the user was not in an accident. However, they do not provide any location or prediction services as of yet. As such, users will currently find a lack of automatic safety tracking and an inconsistent safety experience across different types of ride-sharing and travel apps.
-
-Our app hopes to unify and create a tracking travel app that can fulfill all these needs in one simple place. We want to provide individuals with peace of mind for those that do fall asleep on public transport, those that wish to but are too wary, and those that wish for consistent and automatic safety checks during travel. To accomplish this mission, we developed a travel tracking app that allows for not just location sharing with friends and family but also automatic self-monitoring. From a technical perspective, we provided this solution by allowing customers to input their travel destination and then when they travel, allow them to set a wake-up alarm or notification for when they approach their destination by tracking their location and using geo-fencing.
-
-Moreover, for customers that are worried about travel in shared rides, we also provided warning wake-up notifications if we notice a significant deviation from their destination. To accomplish this, we employed prediction techniques and use mapping APIs as a way to determine the safety level of the passenger and wake them up in case of danger. Beyond this, we also incorporated traditional features of a tracking-travel app such as sharing location with friends and family.
-
-There are a few existing solutions available, but these solutions have some limitations. For example , TravAlert[1] works by sending out a GPS ping every X number of seconds to figure out your location relative to your destination. Sleepy travelers can enter whether they&#39;re on a bus or a train and their destination into the app, setting the alert for either minutes or miles away. But , this app works when you are travelling in the bus. Another example that is present is [OmniBuzz for iPhone](https://itunes.apple.com/us/app/omnibuzz-gps-alarm-for-transit/id1076106050?mt=8)[2] —is both highly rated and free. Because it relies on GPS signals that can&#39;t travel far underground, it doesn&#39;t work dependably at all Metro stations.
-
 
 # **Design and Implementation**
 
-![](RackMultipart20210502-4-om7rho_html_8fb6a77418d841ea.png)
+![alt text](https://github.com/Abhineeth09/RideSafe/blob/master/gitImages/Image1.png)
 
 Fig 1 : Architectural Diagram
 
@@ -45,15 +35,15 @@ The current solutions for this problem are in ride hailing apps like Uber. That 
 
 our application was tested against all the different constraints. The application was also tested using &quot;Apache Bench &quot; , which is a tool used for stress/load testing. This test was performed to witness auto scaling. To test how fast our application can handle 100 requests with a maximum of 50 requests running concurrently , we fired the below command from our local linux machine , ab -n 100 -c 50 &quot;[https://round-office-312023.wn.r.appspot.com/locationservice?start\_latitude=31.72638&amp;start\_longitude=-112.17878&amp;end\_latitude=42.360081&amp;end\_longitude=-71.058884&amp;userID=0](https://round-office-312023.wn.r.appspot.com/locationservice?start_latitude=31.72638&amp;start_longitude=-112.17878&amp;end_latitude=42.360081&amp;end_longitude=-71.058884&amp;userID=0)&quot;. The above command&#39;s results are shown below:
 
-![](RackMultipart20210502-4-om7rho_html_1b5f5be8dc058913.png)
+![alt text](https://github.com/Abhineeth09/RideSafe/blob/master/gitImages/Image2.png)
 
 Figure 2 : Scaled Instances as a result of stress test.
 
-![](RackMultipart20210502-4-om7rho_html_9643cdde21e12b36.png)
+![alt text](https://github.com/Abhineeth09/RideSafe/blob/master/gitImages/Image3.png)
 
 Figure 3: CPU Utilization during Stress Testing
 
-![](RackMultipart20210502-4-om7rho_html_2e284103cb2e8cde.png)
+![alt text](https://github.com/Abhineeth09/RideSafe/blob/master/gitImages/Image4.png)
 
 Figure 4: Memory Usage during Stress Testing
 
