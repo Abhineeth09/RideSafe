@@ -10,7 +10,8 @@ _[Abhineeth Mishra](https://www.linkedin.com/in/abhineethmishra/), Justin Colyar
 
 Traveling can be a tiring and depleting task. One of the ways we feel that travel is not being addressed at the moment is for traveling sleeping passengers. Oftentimes people have to guess or stress about falling asleep on the subways, buses, or even a Lyft ride if they are fatigued from lack of sleep, extended travel, or drinking. Traditional tracking apps and safety features rely on manual intervention on behalf of an additional party such as family checking the user&#39;s location and do little to notify the user about arriving at their destination, waking the user, and providing automatic safety checks.
 
-
+Demo:
+![alt text](https://github.com/Abhineeth09/RideSafe/blob/master/gitImages/AppDemo.gif)
 
 # **Design and Implementation**
 
