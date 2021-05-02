@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                       hintStyle: TextStyle( color: Colors.grey, fontSize: 19.0,fontFamily: "Brand Bold"),
 
                     ),
-                    style: TextStyle(fontSize: 20.0),
+                    style: TextStyle(fontSize: 20.0,fontFamily: "Brand Bold"),
                   ),
                   SizedBox(height: 3.0,),
                   TextField(

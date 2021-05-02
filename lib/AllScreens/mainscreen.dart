@@ -33,7 +33,7 @@ var showWarning=true;
 var initialPos, finalPos, pickUpLatLng, dropOffLatLng;
 var uid;
 var isNear=false;
-int counter = 0, timeInterval=30;
+int counter = 0, timeInterval=2;
 Position currentPosition;
 class _MainScreenState extends State<MainScreen> {
 
