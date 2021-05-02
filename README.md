@@ -5,12 +5,12 @@
 
 _Abhineeth Mishra, Justin Colyar, Ayushi Shekhar_
 
-1.
+
 # **Introduction**
 
 Traveling can be a tiring and depleting task. One of the ways we feel that travel is not being addressed at the moment is for traveling sleeping passengers. Oftentimes people have to guess or stress about falling asleep on the subways, buses, or even a Lyft ride if they are fatigued from lack of sleep, extended travel, or drinking. Traditional tracking apps and safety features rely on manual intervention on behalf of an additional party such as family checking the user&#39;s location and do little to notify the user about arriving at their destination, waking the user, and providing automatic safety checks.
 
-1.
+
 # **Background**
 
 It is always painful to miss your stop , reverse your route , go to your stop , and imagine the pain if that would have been the last bus. The existing modern technology and solutions for today are scattered and inconsistent. In our research, we could not find any automatic self-tracking app for sleeping and travel safety. Popular tracking apps that exist limit functionality to simple location tracking and sharing with friends. Moreover, ride-sharing applications provide limited and inconsistent safety mechanisms for traveling. For instance, Lyft allows the user to share their location with family and detect stopping for significant portions of time to verify the user was not in an accident. However, they do not provide any location or prediction services as of yet. As such, users will currently find a lack of automatic safety tracking and an inconsistent safety experience across different types of ride-sharing and travel apps.
@@ -21,7 +21,7 @@ Moreover, for customers that are worried about travel in shared rides, we also p
 
 There are a few existing solutions available, but these solutions have some limitations. For example , TravAlert[1] works by sending out a GPS ping every X number of seconds to figure out your location relative to your destination. Sleepy travelers can enter whether they&#39;re on a bus or a train and their destination into the app, setting the alert for either minutes or miles away. But , this app works when you are travelling in the bus. Another example that is present is [OmniBuzz for iPhone](https://itunes.apple.com/us/app/omnibuzz-gps-alarm-for-transit/id1076106050?mt=8)[2] —is both highly rated and free. Because it relies on GPS signals that can&#39;t travel far underground, it doesn&#39;t work dependably at all Metro stations.
 
-1.
+
 # **Design and Implementation**
 
 ![](RackMultipart20210502-4-om7rho_html_8fb6a77418d841ea.png)
@@ -40,7 +40,7 @@ Our proposed solution solves the problem statement described in Section 1 as we 
 
 The current solutions for this problem are in ride hailing apps like Uber. That limits the usage to only Uber(or other app) rides, our app can work for any mode of transportation. Also, the additional features like waking up the user when they are near the destination are unique to our app.
 
-1.
+
 # **Testing and evaluation**
 
 our application was tested against all the different constraints. The application was also tested using &quot;Apache Bench &quot; , which is a tool used for stress/load testing. This test was performed to witness auto scaling. To test how fast our application can handle 100 requests with a maximum of 50 requests running concurrently , we fired the below command from our local linux machine , ab -n 100 -c 50 &quot;[https://round-office-312023.wn.r.appspot.com/locationservice?start\_latitude=31.72638&amp;start\_longitude=-112.17878&amp;end\_latitude=42.360081&amp;end\_longitude=-71.058884&amp;userID=0](https://round-office-312023.wn.r.appspot.com/locationservice?start_latitude=31.72638&amp;start_longitude=-112.17878&amp;end_latitude=42.360081&amp;end_longitude=-71.058884&amp;userID=0)&quot;. The above command&#39;s results are shown below:
@@ -57,7 +57,7 @@ Figure 3: CPU Utilization during Stress Testing
 
 Figure 4: Memory Usage during Stress Testing
 
-1.
+
 # **Code**
 
 5.1 CODE FUNCTIONALITY
